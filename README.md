@@ -55,16 +55,9 @@ This project is licensed under the MIT License.
 # Acknowledgements
 This application utilizes the following packages:
 
-Express: Fast, unopinionated, minimalist web framework for Node.js.
-Nodemailer: Send e-mails with Node.js.
+- Express: Fast, unopinionated, minimalist web framework for Node.js.
+
+- Nodemailer: Send e-mails with Node.js.
 
 # Contact
 If you have any questions or suggestions, please feel free to contact me at nobleosinachi@gmail.com
-
-
-
-
-
-
-
-
