@@ -61,4 +61,4 @@ This application utilizes the following packages:
 - Nodemailer: Send e-mails with Node.js.
 
 # Contact
-If you have any questions or suggestions, please feel free to contact me at (nobleosinachi@gmail.com)[nobleosinachi@gmail.com]
+If you have any questions or suggestions, please feel free to contact me via mail.
