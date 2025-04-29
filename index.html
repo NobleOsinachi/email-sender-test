@@ -12,19 +12,16 @@
     <button onclick="sendEmail()">Send Mail</button>
 
     <script>
-        function sendEmail()
-        {
-            fetch('http://localhost:3000/send-email')
-                .then(function (response)
-                {
+        function sendEmail() {
+            fetch('https://email-sender-test.vercel.app/send-email')
+                .then(function (response) {
                     if (response.ok) {
                         alert('Email sent successfully');
                     } else {
                         alert('Error sending email');
                     }
                 })
-                .catch(function (error)
-                {
+                .catch(function (error) {
                     console.log('Error sending email:', error);
                     alert('Error sending email');
                 });
