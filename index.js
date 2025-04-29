@@ -54,7 +54,7 @@ const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
     user: 'chukwukerenoble98@gmail.com',
-    pass: 'wlofafnargtufsft'
+    pass: 'spxuzulyfbfylqcc'
   }
 });
 
@@ -64,7 +64,7 @@ app.get('/send-email', function (req, res) {
 
   const mailOptions = {
     from: 'chukwukerenoble98@gmail.com',
-    to: 'catherinecatherineben@gmail.com',
+    to: 'nobleosinachi98@gmail.com',
     subject: 'Hello from Nodemailer',
     text: 'Today\'s date is ' + new Date()
   };
@@ -110,7 +110,7 @@ app.post('/submit-form', simpleRateLimiter, async (req, res) => {
     // Email content
     const mailOptions = {
       from: 'chukwukerenoble98@gmail.com',
-      to: 'chukwukerenoble98@gmail.com',
+      to: 'nobleosinachi98@gmail.com',
       subject: `New Contact Form Submission: ${project}`,
       html: `
         <h2>New Contact Form Submission</h2>
