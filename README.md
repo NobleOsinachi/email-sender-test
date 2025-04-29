@@ -1,7 +1,6 @@
-
 # Node.js Email Sender
 
-This is a simple Node.js application that sends emails using Nodemailer. 
+This is a simple Node.js application that sends emails using Nodemailer.
 It provides an API endpoint that allows you to trigger sending an email at the click of a button.
 
 ## Prerequisites
@@ -24,6 +23,7 @@ npm install
 ```
 
 ## Usage
+
 Open the index.js file in a text editor.
 
 Update the transporter and mailOptions objects with your Gmail account credentials and the email details (from, to, subject, and text).
@@ -39,21 +39,23 @@ npm start
 
 This will start the server on port 3000.
 
-Open your web browser and navigate to http://localhost:3000/send-email. This will trigger the email sending process.
+Open your web browser and navigate to http://localhost:3000/test. This will trigger the email sending process.
 
 Check the console for logs. If the email was sent successfully, you will see a success message along with the email response. If there was an error, you will see an error message.
 
 API Endpoint
 The application provides the following API endpoint:
 
-GET /send-email: Sends an email using the configured transporter and mail options.
+GET /test: Sends an email using the configured transporter and mail options.
 Contributing
 Contributions are welcome! If you find any issues or want to add new features, feel free to open a pull request.
 
 # License
+
 This project is licensed under the MIT License.
 
 # Acknowledgements
+
 This application utilizes the following packages:
 
 - Express: Fast, unopinionated, minimalist web framework for Node.js.
@@ -61,4 +63,5 @@ This application utilizes the following packages:
 - Nodemailer: Send e-mails with Node.js.
 
 # Contact
+
 If you have any questions or suggestions, please feel free to contact me via mail.

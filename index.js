@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -64,7 +66,7 @@ app.get("/", (req, res) => {
 });
 
 // Simple email endpoint
-app.get("/send-email", function (req, res) {
+app.get("/test", function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const mailOptions = {
@@ -93,17 +95,15 @@ app.get("/submit-form", (req, res) => {
 // Form submission endpoint with rate limiting
 app.post("/submit-form", simpleRateLimiter, async (req, res) => {
   try {
-    // Validate required fields
     const { name, email, project, message } = req.body;
-    
+
     if (!name || !email || !project || !message) {
       return res.status(400).json({ 
         success: false, 
         message: "All fields are required" 
       });
     }
-    
-    // Basic email validation
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ 
@@ -111,60 +111,73 @@ app.post("/submit-form", simpleRateLimiter, async (req, res) => {
         message: "Invalid email address" 
       });
     }
+
+
+
     
-    // Email content
+    // --- Read and personalize email_template.html ---
+    const notificationEmailPath = path.join(__dirname, "email_notification_template.html");
+    let notificationEmail = fs.readFileSync(notificationEmailPath, "utf8");
+
+    // Replace placeholders in template
+    notificationEmail = notificationEmail
+      .replace(/\$name/g, name)
+      .replace(/\$email/g, email)
+      .replace(/\$project/g, project)
+      .replace(/\$message/g, message.replace(/\n/g, "<br>"));
+
+
+
+    // --- Send email to Noble ---
     const mailOptions = {
       from: "chukwukerenoble98@gmail.com",
       to: "nobleosinachi98@gmail.com",
       subject: `New Contact Form Submission: ${project}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Project Type:</strong> ${project}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
-      `,
+      html:notificationEmail,
       replyTo: email
     };
-    
-    // Send email
+
     await transporter.sendMail(mailOptions);
-    
-    // Send confirmation email to the user
+
+    // --- Read and personalize email_template.html ---
+    const templatePath = path.join(__dirname, "email_template.html");
+    let template = fs.readFileSync(templatePath, "utf8");
+
+    // Replace placeholders in template
+    template = template
+      .replace(/\$name/g, name)
+      .replace(/\$email/g, email)
+      .replace(/\$project/g, project)
+      .replace(/\$message/g, message.replace(/\n/g, "<br>"));
+
+    // --- Send confirmation email to user ---
     const confirmationEmail = {
       from: "chukwukerenoble98@gmail.com",
       to: email,
       subject: "Thank you for your inquiry",
-      // replace with email_template.html
-      html: `
-        <h2>Thank you for contacting us!</h2>
-        <p>Hello ${name},</p>
-        <p>We"ve received your inquiry about ${project} and will get back to you as soon as possible.</p>
-        <p>Here"s a copy of your message:</p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
-        <p>Best regards,<br>Your Name</p>
-      `
+      html: template
     };
-    
+
     await transporter.sendMail(confirmationEmail);
-    
-    // Success response
+
     return res.status(200).json({ 
       success: true, 
       message: "Form submitted successfully! We will contact you soon." 
     });
-    
+
   } catch (error) {
     console.error("Form submission error:", error);
-    
-    // Error response
     return res.status(500).json({ 
       success: false, 
       message: "Something went wrong. Please try again later." 
     });
   }
 });
+
+
+
+
+
 
 // Serve static files (if needed)
 app.use(express.static("public"));
