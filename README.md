@@ -17,7 +17,7 @@ Before running this application, make sure you have the following installed:
 2. Navigate to the project directory and install the dependencies:
 
 ```
-cd email-sender-test
+cd nobleosinachi-email-api
 
 npm install
 ```

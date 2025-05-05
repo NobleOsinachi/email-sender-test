@@ -87,13 +87,74 @@ app.get("/test", function (req, res) {
   });
 });
 
-// GET endpoint for /submit-form - redirects to your website
-app.get("/submit-form", (req, res) => {
+app.post("/homepage", simpleRateLimiter, async (req, res) => {
+  try {
+    const { name, email, project, message } = req.body;
+
+    if (!name || !email || !project || !message) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: "Invalid email address" });
+    }
+
+    // Read and personalize notification email
+    const notificationEmailPath = path.join(__dirname, "email_notification_template.html");
+    let notificationEmail = fs.readFileSync(notificationEmailPath, "utf8");
+    notificationEmail = notificationEmail
+      .replace(/\$name/g, name)
+      .replace(/\$email/g, email)
+      .replace(/\$project/g, project)
+      .replace(/\$message/g, message.replace(/\n/g, "<br>"));
+
+    await transporter.sendMail({
+      from: "chukwukerenoble98@gmail.com",
+      to: "nobleosinachi98@gmail.com",
+      subject: `New Contact Form Submission: ${project}`,
+      html: notificationEmail,
+      replyTo: email
+    });
+
+    // Confirmation email
+    const templatePath = path.join(__dirname, "email_template.html");
+    let template = fs.readFileSync(templatePath, "utf8");
+    template = template
+      .replace(/\$name/g, name)
+      .replace(/\$email/g, email)
+      .replace(/\$project/g, project)
+      .replace(/\$message/g, message.replace(/\n/g, "<br>"));
+
+    await transporter.sendMail({
+      from: "chukwukerenoble98@gmail.com",
+      to: email,
+      subject: "Thank you for your inquiry",
+      html: template
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Form submitted successfully! We will contact you soon."
+    });
+
+  } catch (error) {
+    console.error("Form submission error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again later."
+    });
+  }
+});
+
+
+// GET endpoint for /video-editor-form - redirects to your website
+app.get("/video-editor-form", (req, res) => {
   res.redirect("https://nobleosinachi.github.io/video-editor");
 });
 
 // Form submission endpoint with rate limiting
-app.post("/submit-form", simpleRateLimiter, async (req, res) => {
+app.post("/video-editor-form", simpleRateLimiter, async (req, res) => {
   try {
     const { name, email, project, message } = req.body;
 
