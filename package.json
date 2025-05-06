@@ -1,7 +1,7 @@
 {
-  "name": "contact-form-handler",
+  "name": "nobleosinachi-email-api-handler",
   "version": "1.0.0",
-  "description": "Email handler for contact form submissions",
+  "description": "Email handler API for form submissions on my website https://nobleosinachi.github.io/",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
